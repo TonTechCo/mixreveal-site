@@ -17,7 +17,7 @@ https://tontechco.github.io/mixreveal-site/
   accepts the origin `https://tontechco.github.io` with a Referer under `/mixreveal-site/`.
 - Android: the Play button carries `referrer=mr_inv=<code>&mr_c=<id>`, read once by the game through
   the Play Install Referrer API.
-- `assets/`: app icon (stand-in until the final icon), `og.png` (1200x630 share image), the art row,
+- `assets/`: app icon (from the game repo), `og.png` (1200x630 share image), the art row,
   `site.css`. Regenerate the PNGs with `python3 tools/make_assets.py ~/IdeaProjects/MixReveal`.
 
 Links use root-relative `/mixreveal-site/...` paths so `404.html` works at any depth. To preview

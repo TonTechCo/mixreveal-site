@@ -3,9 +3,8 @@ from the game's pack01 art (the coloured subject PNGs).
 
     python3 tools/make_assets.py ~/IdeaProjects/MixReveal
 
-The icon is a stand-in until the game has its final app icon: a cream tile with
-a half-painted cupcake (sketch on the left, colour on the right), which is what
-the game does: pour paint, reveal the picture.
+The icon is the game's app icon (assets/marketing/ios_icons/icon_1024.png), with
+rounded corners for the web.
 """
 import sys
 from pathlib import Path
@@ -55,13 +54,11 @@ def half_revealed(name, size):
 
 
 def icon(size=1024):
-    tile = rounded(size, int(size * 0.22), CREAM + (255,))
-    d = ImageDraw.Draw(tile)
-    for i, c in enumerate(PAINTS[:4]):          # paint drops along the top
-        x = int(size * (0.2 + i * 0.2))
-        d.ellipse([x - size * 0.05, size * 0.07, x + size * 0.05, size * 0.17], fill=c)
-    art = half_revealed("cupcake", int(size * 0.74))
-    tile.alpha_composite(art, (int(size * 0.13), int(size * 0.2)))
+    app = Image.open(GAME / "assets/marketing/ios_icons/icon_1024.png").convert("RGBA").resize((size, size), Image.LANCZOS)
+    mask = Image.new("L", (size, size), 0)
+    ImageDraw.Draw(mask).rounded_rectangle([0, 0, size - 1, size - 1], int(size * 0.22), fill=255)
+    tile = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    tile.paste(app, (0, 0), mask)
     return tile
 
 
