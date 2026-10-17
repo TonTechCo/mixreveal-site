@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>You're invited to Mix &amp; Reveal</title>
+<meta name="description" content="Mix colors, pour paint and reveal the picture. Join me on Mix &amp; Reveal and we both get coins.">
+<meta name="theme-color" content="#E5484D">
+<meta name="referrer" content="no-referrer-when-downgrade">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Mix &amp; Reveal"><meta property="og:title" content="You're invited to Mix &amp; Reveal"><meta property="og:description" content="Mix colors, pour paint and reveal the picture. Join me and we both get coins."><meta property="og:image" content="https://tontechco.github.io/mixreveal-site/assets/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:url" content="https://tontechco.github.io/mixreveal-site/"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="You're invited to Mix &amp; Reveal"><meta name="twitter:description" content="Mix colors, pour paint and reveal the picture. Join me and we both get coins."><meta name="twitter:image" content="https://tontechco.github.io/mixreveal-site/assets/og.png">
+<link rel="icon" href="/mixreveal-site/assets/icon-512.png">
+<link rel="apple-touch-icon" href="/mixreveal-site/assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/mixreveal-site/assets/site.css">
+</head>
+<body>
+<div class="stripe"></div>
+<div class="wrap">
+<header class="site"><img src="/mixreveal-site/assets/icon-512.png" alt=""><a href="/mixreveal-site/">Mix &amp; Reveal</a></header>
+<div class="card">
+<div class="inviter" id="who" hidden><div class="avatar" id="avatar" aria-hidden="true"></div></div>
+<h1 id="h">You're invited to Mix &amp; Reveal</h1>
+<p id="lead">Mix colors, pour paint and reveal the picture. Play with me!</p>
+<div id="ok" hidden>
+<div class="gift"><span class="coin" aria-hidden="true"></span><span id="gift">200 coins welcome gift</span></div>
+<div><span class="code" id="code" aria-label="Friend code"></span></div>
+<div class="ctas" id="stores"></div>
+<p class="soon"><span id="auto" role="status" aria-live="polite"></span></p>
+<p class="soon" style="margin-top:14px">Already have the game? <a id="open" href="#">Open it</a>.</p>
+<ol class="steps"><li>Install the game and play the short tutorial.</li><li>The game asks who invited you, or adds your friend by itself.</li><li>You are friends, and you get your coins.</li></ol>
+<p class="note">So the game can ask who invited you, opening this page tells our server about the invite for 2 hours: the friend code and a scrambled, partial network address. Nothing is copied to your clipboard and nothing is used for ads. <a href="/mixreveal-site/privacy/#invites">Privacy</a></p>
+</div>
+<div id="bad" hidden>
+<p class="err" id="errmsg">That link doesn't look right. Invite links end with a friend code like MIX-7K2Q. Check the link with your friend.</p>
+<div class="ctas"><a class="btn ghost" href="/mixreveal-site/">About the game</a></div>
+</div>
+</div>
+<footer><a href="/mixreveal-site/privacy/">Privacy</a> &nbsp;·&nbsp; <a href="/mixreveal-site/terms/">Terms</a> &nbsp;·&nbsp; <a href="/mixreveal-site/support/">Support</a><br>© TonTech · info@tontech.co</footer>
+</div>
+<script>
+// GitHub Pages serves this file for every unknown path, so it is the router for
+//   /mixreveal-site/i/<code>   invite (friend code MIX-XXXX; the MIX- prefix is optional)
+//   /mixreveal-site/c/<id>     challenge (16 hex chars)
+// It asks the API (POST /claim, text/plain so no CORS preflight) for the inviter's
+// name; on an iPhone that same call records the 2-hour deferred-invite claim
+// (server/links.js + Nakama invite_landing). Android gets the code through the
+// Play install referrer instead. No clipboard, ever.
+(function(){
+  var CONFIG = {
+    api: 'https://mixreveal-api.tontech.co',
+    appStoreId: 'ASC_APP_ID_TODO',            // set when the App Store record exists
+    playPackage: 'com.tontech.mixreveal',
+    playLive: false,                          // set true once the Play listing is public
+    scheme: 'mixreveal',
+    autoRedirectMs: 2500
+  };
+  var ALPHA = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';   // server/nakama/src/consts.ts FRIEND_CODE_ALPHABET
+  var COLORS = ['#E5484D','#FF8A3D','#3E7BFA','#46B65A','#8E4EC6','#E06FA5'];
+  var $ = function(id){ return document.getElementById(id); };
+  var local = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+  if (local) {   // local preview: ?api=http://127.0.0.1:PORT
+    var q = /[?&]api=([^&]+)/.exec(location.search);
+    if (q) CONFIG.api = decodeURIComponent(q[1]);
+  }
+  var m = /\/(i|c)\/([^\/?#]+)\/?$/.exec(location.pathname);
+  if (!m) {
+    $('h').textContent = 'Page not found';
+    $('lead').textContent = 'This page does not exist.';
+    $('errmsg').textContent = 'Nothing here. Did you mean to open an invite link?';
+    $('bad').hidden = false;
+    return;
+  }
+  var kind = m[1], raw = '';
+  try { raw = decodeURIComponent(m[2]); } catch (e) { raw = ''; }
+  var id = '';
+  if (kind === 'i') {
+    var s = raw.toUpperCase().replace(/\s/g, '').replace(/^MIX-?/, '');
+    var valid = s.length === 4;
+    for (var i = 0; valid && i < 4; i++) if (ALPHA.indexOf(s.charAt(i)) < 0) valid = false;
+    if (valid) id = 'MIX-' + s;
+  } else if (/^[0-9a-f]{8,32}$/i.test(raw)) {
+    id = raw.toLowerCase();
+  }
+  if (!id) {
+    if (kind === 'c') $('errmsg').textContent = "That challenge link doesn't look right. Ask your friend to share it again.";
+    $('bad').hidden = false;
+    return;
+  }
+
+  var ua = navigator.userAgent || '';
+  var ios = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var android = /Android/.test(ua);
+  var code = kind === 'i' ? id : '';
+  var appStore = CONFIG.appStoreId.indexOf('TODO') < 0 ? 'https://apps.apple.com/app/id' + CONFIG.appStoreId + '?ct=invite&mt=8' : '';
+  var playUrl = function(){
+    var ref = [];
+    if (code) ref.push('mr_inv=' + code);
+    if (kind === 'c') ref.push('mr_c=' + id);
+    ref.push('utm_source=' + (kind === 'i' ? 'invite' : 'challenge'));
+    return 'https://play.google.com/store/apps/details?id=' + CONFIG.playPackage + '&referrer=' + encodeURIComponent(ref.join('&'));
+  };
+  var storeLink = function(label, href, primary){
+    var a = document.createElement('a');
+    a.className = 'btn ' + (href ? (primary ? 'primary' : 'alt') : 'ghost');
+    a.textContent = href ? label : label + ': coming soon';
+    if (href) a.href = href; else a.setAttribute('aria-disabled', 'true');
+    a.id = label === 'Google Play' ? 'play' : 'appstore';
+    return a;
+  };
+  var drawStores = function(){
+    var box = $('stores'); box.innerHTML = '';
+    var apple = storeLink('App Store', appStore, ios), play = storeLink('Google Play', CONFIG.playLive ? playUrl() : '', android);
+    if (android) { box.appendChild(play); box.appendChild(apple); } else { box.appendChild(apple); box.appendChild(play); }
+  };
+
+  $('code').textContent = code || 'Challenge';
+  if (!code) $('code').hidden = true;
+  $('open').href = CONFIG.scheme + '://' + (kind === 'i' ? 'invite/' : 'challenge/') + id;
+  if (kind === 'c') {
+    $('h').textContent = 'A Mix & Reveal challenge for you';
+    $('lead').textContent = 'Same picture, same paints. Can you beat my time?';
+    document.title = 'A Mix & Reveal challenge for you';
+  }
+  drawStores();
+  $('ok').hidden = false;
+
+  var showInviter = function(name, avatar){
+    if (!name) return;
+    var n = parseInt(String(avatar || '').replace('avatar_', ''), 10);
+    $('avatar').textContent = name.charAt(0).toUpperCase();
+    $('avatar').style.background = COLORS[(isNaN(n) ? name.length : n) % COLORS.length];
+    $('who').hidden = false;
+    $('h').textContent = kind === 'i' ? name + ' invited you to Mix & Reveal' : name + ' challenged you in Mix & Reveal';
+    document.title = $('h').textContent;
+  };
+
+  // Ask the API who this is (and, on iPhone, note the invite for 2 hours).
+  var settled = false, cancelled = false;
+  var go = function(){
+    if (settled) return; settled = true;
+    if (cancelled || !(ios || android)) return;
+    var target = ios ? appStore : (CONFIG.playLive ? playUrl() : '');
+    if (!target) return;
+    $('auto').textContent = 'Taking you to the store...';
+    setTimeout(function(){ if (!cancelled) location.href = target; }, CONFIG.autoRedirectMs);
+  };
+  ['touchstart', 'mousedown', 'keydown'].forEach(function(e){ document.addEventListener(e, function(){ cancelled = true; }, { once: true }); });
+  try {
+    fetch(CONFIG.api + '/claim', {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ kind: kind, id: id }),
+      referrerPolicy: 'no-referrer-when-downgrade',
+      credentials: 'omit',
+      cache: 'no-store'
+    }).then(function(r){ return r.ok ? r.json() : null; }).then(function(d){
+      if (d && d.valid) {
+        showInviter(d.name, d.avatar);
+        if (!code && d.code) { code = d.code; drawStores(); }   // a challenge also friends its sender
+      }
+      go();
+    }, go);
+  } catch (e) { go(); }
+  setTimeout(go, 3000);
+})();
+</script>
+</body>
+</html>
