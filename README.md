@@ -3,7 +3,7 @@
 Public site for **Mix & Reveal: Color Puzzle** (TonTech). Static GitHub Pages project site:
 https://tontechco.github.io/mixreveal-site/
 
-- `/` landing, `/privacy/`, `/terms/`, `/support/`
+- `/` landing (with the six store screenshots in `assets/shots/`, copied from the game's `build/store/screenshots/ios/en/iphone_69`), `/privacy/`, `/terms/`, `/support/`, `/delete-account/` (the Play Console account-deletion URL)
 - `/i/<CODE>`: invite page, `/c/<ID>`: challenge page. Project Pages cannot route, so GitHub serves
   `404.html` for any unknown path; its script reads the code from the URL, validates it against the
   friend-code format (`MIX-` + 4 of `ABCDEFGHJKLMNPQRSTUVWXYZ23456789`, see the game's

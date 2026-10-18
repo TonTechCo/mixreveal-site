@@ -48,4 +48,7 @@ footer a{color:var(--muted);text-decoration:none}footer a:hover{color:var(--red)
 .note{color:var(--muted);font-size:.82rem;text-align:center;margin:14px auto 0;max-width:460px}
 .err{color:#8a1f22;background:#ffe3e1;border-radius:12px;padding:12px 14px}
 @media(max-width:520px){.hero h1{font-size:2.1rem}h1{font-size:1.75rem}.btn{width:100%;text-align:center}.ctas{flex-direction:column}}
+.shots{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 2px 14px;margin:18px 0 0;-webkit-overflow-scrolling:touch}
+.shots img{flex:0 0 auto;width:180px;height:auto;aspect-ratio:1320/2868;border-radius:18px;box-shadow:0 8px 20px rgba(46,42,38,.16);scroll-snap-align:center;background:var(--cream)}
+@media(min-width:760px){.shots{justify-content:center;flex-wrap:wrap;overflow:visible}.shots img{width:220px}}
 [hidden]{display:none!important}
