@@ -30,6 +30,13 @@
 <ol class="steps"><li>Install the game and play the short tutorial.</li><li>The game asks who invited you, or adds your friend by itself.</li><li>You are friends, and you get your coins.</li></ol>
 <p class="note">So the game can ask who invited you, opening this page tells our server about the invite for 2 hours: the friend code and a scrambled, partial network address. Nothing is copied to your clipboard and nothing is used for ads. <a href="/mixreveal-site/privacy/#invites">Privacy</a></p>
 </div>
+<div id="party" hidden>
+<div><span class="code" id="room" aria-label="Room code" style="font-size:2.6rem;padding:4px 22px"></span></div>
+<div class="ctas"><a class="btn green" id="popen" href="#">Open the app</a></div>
+<p class="soon" style="margin-top:14px">Already in the app? Tap <b>Join with code</b> and type <b id="room2"></b>.</p>
+<p class="soon" style="margin-top:18px">New to Mix &amp; Reveal? Get the game, then join the room.</p>
+<div class="ctas" id="pstores"></div>
+</div>
 <div id="bad" hidden>
 <p class="err" id="errmsg">That link doesn't look right. Invite links end with a friend code like MIX-7K2Q. Check the link with your friend.</p>
 <div class="ctas"><a class="btn ghost" href="/mixreveal-site/">About the game</a></div>
@@ -41,6 +48,8 @@
 // GitHub Pages serves this file for every unknown path, so it is the router for
 //   /mixreveal-site/i/<code>   invite (friend code MIX-XXXX; the MIX- prefix is optional)
 //   /mixreveal-site/c/<id>     challenge (16 hex chars)
+//   /mixreveal-site/p/<CODE>   party room (4 chars of the friend-code alphabet; no /claim,
+//                              no auto-redirect: the visitor may already have the app)
 // It asks the API (POST /claim, text/plain so no CORS preflight) for the inviter's
 // name; on an iPhone that same call records the 2-hour deferred-invite claim
 // (server/links.js + Nakama invite_landing). Android gets the code through the
@@ -62,7 +71,7 @@
     var q = /[?&]api=([^&]+)/.exec(location.search);
     if (q) CONFIG.api = decodeURIComponent(q[1]);
   }
-  var m = /\/(i|c)\/([^\/?#]+)\/?$/.exec(location.pathname);
+  var m = /\/(i|c|p)\/([^\/?#]+)\/?$/.exec(location.pathname);
   if (!m) {
     $('h').textContent = 'Page not found';
     $('lead').textContent = 'This page does not exist.';
@@ -78,10 +87,13 @@
     var valid = s.length === 4;
     for (var i = 0; valid && i < 4; i++) if (ALPHA.indexOf(s.charAt(i)) < 0) valid = false;
     if (valid) id = 'MIX-' + s;
+  } else if (kind === 'p') {
+    if (/^[A-HJ-NP-Z2-9]{4}$/i.test(raw)) id = raw.toUpperCase();
   } else if (/^[0-9a-f]{8,32}$/i.test(raw)) {
     id = raw.toLowerCase();
   }
   if (!id) {
+    if (kind === 'p') $('errmsg').textContent = "That party link doesn't look right. Room codes have 4 letters and numbers, like K7QX. Ask your friend for the code.";
     if (kind === 'c') $('errmsg').textContent = "That challenge link doesn't look right. Ask your friend to share it again.";
     $('bad').hidden = false;
     return;
@@ -91,9 +103,10 @@
   var ios = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
   var android = /Android/.test(ua);
   var code = kind === 'i' ? id : '';
-  var appStore = CONFIG.appStoreId.indexOf('TODO') < 0 ? 'https://apps.apple.com/app/id' + CONFIG.appStoreId + '?ct=invite&mt=8' : '';
+  var appStore = CONFIG.appStoreId.indexOf('TODO') < 0 ? 'https://apps.apple.com/app/id' + CONFIG.appStoreId + '?ct=' + (kind === 'p' ? 'party' : 'invite') + '&mt=8' : '';
   var playUrl = function(){
     var ref = [];
+    if (kind === 'p') return 'https://play.google.com/store/apps/details?id=' + CONFIG.playPackage + '&referrer=' + encodeURIComponent('mr_party=' + id + '&utm_source=party');
     if (code) ref.push('mr_inv=' + code);
     if (kind === 'c') ref.push('mr_c=' + id);
     ref.push('utm_source=' + (kind === 'i' ? 'invite' : 'challenge'));
@@ -108,10 +121,22 @@
     return a;
   };
   var drawStores = function(){
-    var box = $('stores'); box.innerHTML = '';
+    var box = $(kind === 'p' ? 'pstores' : 'stores'); box.innerHTML = '';
     var apple = storeLink('App Store', appStore, ios), play = storeLink('Google Play', CONFIG.playLive ? playUrl() : '', android);
     if (android) { box.appendChild(play); box.appendChild(apple); } else { box.appendChild(apple); box.appendChild(play); }
   };
+
+  if (kind === 'p') {
+    $('h').textContent = "You're invited to a Mix & Reveal party";
+    $('lead').textContent = '3 to 8 players race to reveal the same pictures, live, each on their own phone.';
+    document.title = 'Join my Mix & Reveal party! Room ' + id;
+    $('room').textContent = id;
+    $('room2').textContent = id;
+    $('popen').href = CONFIG.scheme + '://p/' + id;
+    drawStores();
+    $('party').hidden = false;
+    return;
+  }
 
   $('code').textContent = code || 'Challenge';
   if (!code) $('code').hidden = true;
