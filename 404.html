@@ -48,8 +48,9 @@
 // GitHub Pages serves this file for every unknown path, so it is the router for
 //   /mixreveal-site/i/<code>   invite (friend code MIX-XXXX; the MIX- prefix is optional)
 //   /mixreveal-site/c/<id>     challenge (16 hex chars)
-//   /mixreveal-site/p/<CODE>   party room (4 chars of the friend-code alphabet; no /claim,
-//                              no auto-redirect: the visitor may already have the app)
+//   /mixreveal-site/p/<CODE>   party room (4 chars of the friend-code alphabet; no
+//                              auto-redirect: the visitor may already have the app;
+//                              /claim {kind:"p"} notes the room for 10 minutes on iPhone)
 // It asks the API (POST /claim, text/plain so no CORS preflight) for the inviter's
 // name; on an iPhone that same call records the 2-hour deferred-invite claim
 // (server/links.js + Nakama invite_landing). Android gets the code through the
@@ -135,6 +136,18 @@
     $('popen').href = CONFIG.scheme + '://p/' + id;
     drawStores();
     $('party').hidden = false;
+    // On an iPhone this notes the room for 10 minutes (no name, nobody friended),
+    // so a fresh install can join it after the tutorial. Nothing waits on it.
+    try {
+      fetch(CONFIG.api + '/claim', {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({ kind: 'p', id: id }),
+        referrerPolicy: 'no-referrer-when-downgrade',
+        credentials: 'omit',
+        cache: 'no-store'
+      }).catch(function(){});
+    } catch (e) {}
     return;
   }
 
