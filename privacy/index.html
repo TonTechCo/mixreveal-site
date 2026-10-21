@@ -16,7 +16,7 @@
 <div class="wrap">
 <header class="site"><img src="/mixreveal-site/assets/icon-512.png" alt=""><a href="/mixreveal-site/">Mix &amp; Reveal</a></header>
 <div class="panel"><h1>Mix &amp; Reveal Privacy Policy</h1>
-<p><em>Effective date: 2026-10-18 (draft, to be finalised with the App Privacy and Data safety answers before launch)</em></p>
+<p><em>Effective date: 2026-10-20 (draft: final text, awaiting TonTech's sign-off before launch)</em></p>
 <p>This policy explains what information <strong>Mix &amp; Reveal: Color Puzzle</strong> (the "game", published by <strong>TonTech</strong>) collects, how it is used, who it is shared with, how long it is kept and the choices you have.</p>
 
 <h2>1. The short version</h2>
@@ -24,10 +24,10 @@
 <li>No email, phone number or real name is needed. Solo play works offline.</li>
 <li>The game does <strong>not</strong> collect your contacts, photos, microphone audio or precise location.</li>
 <li>Your game account uses a random identifier that the game creates. Your username is checked by an automated moderation service.</li>
-<li>The game shows ads from Google AdMob. Personalised ads and the advertising identifier are only used with your consent and, on iPhone, your tracking permission.</li>
+<li>The game shows ads from <strong>Google AdMob</strong> and, on iPhone outside the EEA, the UK and Switzerland, from <strong>NUVIAD</strong>, plus TonTech's own game promotions. The advertising identifier is only used with your consent and, on iPhone, your tracking permission.</li>
 <li>Gameplay statistics go to our own server, not to analytics companies.</li>
 <li>Invite links never use your clipboard. An invite link opened on an iPhone is remembered for 2 hours only (section 5).</li>
-<li>You can delete your account in the game: <strong>Settings &rarr; Delete account</strong> (section 9).</li>
+<li>You can delete your account in the game: <strong>Settings &rarr; Account &rarr; Delete account</strong> (section 9).</li>
 </ul>
 
 <h2>2. Who we are</h2>
@@ -58,11 +58,16 @@
 <h3>Purchases</h3>
 <p>In-app purchases are processed by Apple or Google; we never see your payment details. To deliver what you bought and to prevent the same purchase from being used twice, our server checks the purchase with Apple's signed receipt data or Google's purchase verification service, and stores the product, the time, the platform and a <strong>scrambled (hashed) form of the purchase identifier</strong>.</p>
 <h3>Crash reports</h3>
-<p>If the game crashes, it may send a crash report to our crash reporting provider, <strong>Sentry</strong>: technical details such as the device model, OS version, app version and the error. Crash reports do not include your username.</p>
+<p>If the game crashes, it may send a crash report to our crash reporting provider, <strong>Sentry</strong>, which acts as our service provider: technical details such as the device model, OS version, app version and the error. Crash reports do not include your username or your game account identifier.</p>
+<h3>Downloads from our servers</h3>
+<p>The game also downloads its settings, extra level packs and our own game promotions from TonTech's servers (<strong>mixreveal-api.tontech.co</strong> and <strong>appadmin.tontech.co</strong>). These requests carry no account or device identifier; like any web request they reveal your IP address to the server, which keeps it only in its logs (section 10).</p>
 
 <h2>4. Ads, consent and install attribution</h2>
 <ul>
-<li>The game shows ads from <strong>Google AdMob</strong>. Where the law requires it (for example in the EEA and the UK), Google's consent form asks you first. On iPhone the game asks for <strong>tracking permission</strong> (App Tracking Transparency). AdMob may collect your advertising identifier, your IP address (which can show your approximate location), ad interactions and diagnostics, as described in <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer">How Google uses information from sites or apps that use its services</a>.</li>
+<li><strong>Consent first.</strong> Before any ad is requested, Google's consent form asks you where the law requires it (for example in the EEA, the UK and Switzerland). Then, on iPhone, the game asks for <strong>tracking permission</strong> (App Tracking Transparency). Until both are answered, no ad is shown, our own promotions included.</li>
+<li>The game shows ads from <strong>Google AdMob</strong>. AdMob may collect your advertising identifier, your IP address (which can show your approximate location), ad interactions and diagnostics, as described in <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer">How Google uses information from sites or apps that use its services</a>.</li>
+<li><strong>On iPhone</strong>, some ads come from <strong>NUVIAD</strong>, an advertising exchange (rtb.nuviad.com). NUVIAD ads are only used outside the EEA, the UK and Switzerland, where Google's consent check confirms that no consent is needed, and only in countries where we have switched them on. For each ad the game sends NUVIAD a random identifier created for NUVIAD ads, the ad space, the device type and model, OS version, screen size, language and time zone, and, <strong>only if you allowed tracking</strong>, the advertising identifier (IDFA). The game never sends your location: NUVIAD works out your country from your IP address. NUVIAD passes the request to advertisers who bid for the ad space; when an ad is shown or tapped, the ad's image and its counting links are loaded from the advertiser's servers. NUVIAD is not used on Android.</li>
+<li>When no ad network has an ad, a slot may show one of <strong>TonTech's own game promotions</strong>, marked "Ad". They are downloaded from our server (appadmin.tontech.co), send no identifier, and only show after the consent steps above. That a promotion was shown or tapped is counted in our gameplay statistics.</li>
 <li>To measure which ad campaigns led to an install, the game sends one install report to our attribution partner <strong>NUVIAD</strong> (notify.nuviad.com): the random per-install identifier, the app version, the device type and model, OS version, screen size, language and time zone. <strong>On iPhone</strong> it is sent only after you allow tracking, and then includes the advertising identifier (IDFA). <strong>On Android</strong> it does not include the advertising identifier. <strong>Where the GDPR applies</strong> (the EEA, the UK and Switzerland) it is not sent at all; elsewhere it is sent only after Google's consent check confirms that no consent is needed where you are.</li>
 <li>Apple's <strong>SKAdNetwork</strong> reports installs and a few in-game milestones (for example finishing the tutorial or a first purchase) to ad networks without any identifier.</li>
 <li>Invite links are never used for ads or attribution.</li>
@@ -92,7 +97,7 @@
 <ul>
 <li><strong>Other players:</strong> your username, avatar, frame, statistics, friend code, leaderboard scores, ghost runs and match results are visible to players you play with or connect to. Your username and avatar appear on your invite links.</li>
 <li><strong>Google AdMob:</strong> ads (see section 4).</li>
-<li><strong>NUVIAD:</strong> the install report described in section 4.</li>
+<li><strong>NUVIAD:</strong> ad requests on iPhone and the install report, as described in section 4, and the advertisers bidding through NUVIAD.</li>
 <li><strong>OpenAI:</strong> username text, for moderation only.</li>
 <li><strong>Sentry:</strong> crash reports.</li>
 <li><strong>Apple and Google:</strong> app store services, purchases and their verification, optional sign-in, Game Center / Play Games leaderboards and SKAdNetwork.</li>
@@ -103,14 +108,15 @@
 <h2>8. Your choices</h2>
 <ul>
 <li><strong>Tracking:</strong> decline the tracking prompt, or change it later in <em>iOS Settings &rarr; Privacy &amp; Security &rarr; Tracking</em>. On Android, reset or delete your advertising ID in <em>Settings &rarr; Privacy &rarr; Ads</em>.</li>
-<li><strong>Ad consent</strong> (EEA/UK): change your choice at any time in the game: <em>Settings &rarr; Privacy options</em>.</li>
+<li><strong>Ad consent</strong> (EEA, UK, Switzerland): change your choice at any time in the game: <em>Settings &rarr; Privacy options</em>.</li>
+<li><strong>Fewer ads:</strong> the Remove Ads purchase removes banners and interstitial ads; optional rewarded ads stay available.</li>
 <li><strong>Notifications:</strong> turn them off in your device settings.</li>
 <li><strong>Invites:</strong> answer No to "Were you invited by...?" and nothing is linked.</li>
 <li><strong>Players:</strong> block or report anyone from the Friends screen.</li>
 </ul>
 
 <h2 id="delete">9. Deleting your account and data</h2>
-<p>In the game, open <strong>Settings &rarr; Delete account</strong> and confirm. This permanently deletes, from our game server:</p>
+<p>In the game, open <strong>Settings &rarr; Account &rarr; Delete account</strong> and confirm twice. This permanently deletes, from our game server:</p>
 <ul>
 <li>your account and its device and sign-in links, your username and friend code;</li>
 <li>your profile, statistics, Duel rating, Tag Team data, coins, boosters and items;</li>
@@ -141,7 +147,7 @@
 <p>Depending on where you live (for example in the EEA or UK under the GDPR, or in California under the CCPA/CPRA) you may have the right to access, correct, delete or port your information, to object to or restrict some uses, and to withdraw consent. You can also complain to your local data protection authority. Contact us to exercise these rights; we will answer within 30 days. Your information may be processed outside your country, for example by our service providers in the United States, with appropriate safeguards such as the EU Standard Contractual Clauses.</p>
 
 <h2>13. Contact</h2>
-<p>For privacy questions or data requests, email <strong>info@tontech.co</strong>. Include your friend code (Settings or the Friends screen) so we can find your account.</p>
+<p>For privacy questions or data requests, email <strong>info@tontech.co</strong>. Include your friend code (Settings &rarr; Account, or the Friends screen) so we can find your account.</p>
 
 <h2>14. Changes</h2>
 <p>We may update this policy. Changes are posted here with a new effective date; important changes are also shown in the game.</p>
